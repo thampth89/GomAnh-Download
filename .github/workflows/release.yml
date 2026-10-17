@@ -1,0 +1,29 @@
+name: Phat hanh bo cai
+on:
+  push:
+    branches: [phat-hanh]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Đọc phiên bản
+        run: echo "VER=$(cat VERSION)" >> "$GITHUB_ENV"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VER }}
+          target_commitish: main
+          name: Gom Ảnh ${{ env.VER }}
+          make_latest: true
+          overwrite_files: true
+          files: GomAnh-Setup-${{ env.VER }}.exe
+          body: |
+            ## Tải về
+            Tải **GomAnh-Setup-${{ env.VER }}.exe** ở mục *Assets* bên dưới, bấm đúp để cài. Không cần quyền quản trị.
+            Windows 10/11, 64-bit.
+
+            Nếu Windows SmartScreen cảnh báo: bấm **More info → Run anyway**.
+
+            Phát triển bởi ThS. Phạm Thị Hồng Thắm
